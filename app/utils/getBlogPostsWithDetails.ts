@@ -9,17 +9,17 @@ export interface BlogPost {
   date: string;
   tags: string[];
   excerpt: string;
-  content?: string;
+  content: string;
 }
 
 export async function getBlogPostsWithDetails(includeContent = false) {
   const postsDirectory = path.join(process.cwd(), 'posts')
-  
+
   if (!fs.existsSync(postsDirectory)) {
     fs.mkdirSync(postsDirectory, { recursive: true })
     return []
   }
-  
+
   const files = fs.readdirSync(postsDirectory)
   const posts = await Promise.all(
     files
@@ -28,7 +28,7 @@ export async function getBlogPostsWithDetails(includeContent = false) {
         const slug = filename.replace('.md', '')
         const fullPath = path.join(postsDirectory, filename)
         const fileContents = fs.readFileSync(fullPath, 'utf8')
-        
+
         const { data: frontmatter, content, excerpt } = matter(fileContents, {
           excerpt: true,
           excerpt_separator: '---'
@@ -60,7 +60,7 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
     const fileContents = fs.readFileSync(fullPath, 'utf8')
     const { data: frontmatter, content } = matter(fileContents)
-    
+
     const processedContent = await processMarkdown(content)
 
     return {
@@ -69,9 +69,9 @@ export async function getBlogPost(slug: string): Promise<BlogPost | null> {
       date: frontmatter.date,
       tags: frontmatter.tags,
       excerpt: '',
-      content: processedContent
+      content: processedContent || ''
     }
-  } catch (error) {
+  } catch {
     return null
   }
-} 
+}
