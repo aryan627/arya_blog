@@ -19,4 +19,19 @@ export async function processMarkdown(content: string) {
     .process(content)
 
   return result.toString()
+}
+
+function all(h: any, node: any) {
+  const values = []
+  const children = node.children || []
+  let index = -1
+  
+  while (++index < children.length) {
+    const result = h(node, children[index], index)
+    if (result) {
+      values.push(result)
+    }
+  }
+  
+  return values
 } 

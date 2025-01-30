@@ -345,3 +345,32 @@
   text-decoration: underline;
 }
 
+.prose ol {
+  @apply list-decimal pl-8 mb-4;
+}
+
+.prose ol li {
+  @apply mb-2;
+}
+
+.prose ol li > ul {
+  @apply mt-2 mb-0;
+}
+
+.prose ol li > p {
+  @apply mb-0;
+}
+
+.prose ol ol {
+  counter-reset: nested-counter;
+}
+
+.prose ol ol > li {
+  counter-increment: nested-counter;
+}
+
+.prose ol li > ul,
+.prose ol li > ol {
+  @apply mt-2;
+}
+
